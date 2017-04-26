@@ -13,7 +13,7 @@ namespace Task3
     {
         void Visit(Circle circle);
         void Visit(Square square);
-        void Visit(Recktangle recktangle);
+        void Visit(Rectangle Rectangle);
         void Visit(Triangle triangle);
     }
 }

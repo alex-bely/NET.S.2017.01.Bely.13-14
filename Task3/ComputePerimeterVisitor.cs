@@ -32,12 +32,12 @@ namespace Task3
         }
 
         /// <summary>
-        /// Calculates perimeter of recktangle
+        /// Calculates perimeter of Rectangle
         /// </summary>
-        /// <param name="recktangle">Rectangle instance</param>
-        public void Visit(Recktangle recktangle)
+        /// <param name="Rectangle">Rectangle instance</param>
+        public void Visit(Rectangle Rectangle)
         {
-            Perimeter = 2 * (recktangle.Width + recktangle.Height);
+            Perimeter = 2 * (Rectangle.Width + Rectangle.Height);
         }
 
         /// <summary>

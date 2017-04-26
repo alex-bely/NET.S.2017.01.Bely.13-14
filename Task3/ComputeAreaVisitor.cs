@@ -19,7 +19,7 @@ namespace Task3
         /// <param name="circle">Circle instance</param>
         public void Visit(Circle circle)
         {
-            Area = Math.PI * Math.Sqrt(circle.Radius);
+            Area = Math.PI * Math.Pow(circle.Radius,2);
         }
         /// <summary>
         /// Calculates area of square
@@ -27,15 +27,15 @@ namespace Task3
         /// <param name="square">Square instance</param>
         public void Visit(Square square)
         {
-            Area = Math.Sqrt(square.Side);
+            Area = Math.Pow(square.Side,2);
         }
         /// <summary>
-        /// Calculates area of recktangle
+        /// Calculates area of Rectangle
         /// </summary>
-        /// <param name="recktangle">Recktangle instance</param>
-        public void Visit(Recktangle recktangle)
+        /// <param name="Rectangle">Rectangle instance</param>
+        public void Visit(Rectangle Rectangle)
         {
-            Area = recktangle.Width * recktangle.Height;
+            Area = Rectangle.Width * Rectangle.Height;
         }
         /// <summary>
         /// Calculates area of triangle

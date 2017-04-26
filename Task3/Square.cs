@@ -9,7 +9,7 @@ namespace Task3
     /// <summary>
     /// Represents Triangle figure
     /// </summary>
-    public class Square : Recktangle
+    public class Square : Rectangle
     {
         public double Side { get; }
 

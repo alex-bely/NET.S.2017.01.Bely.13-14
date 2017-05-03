@@ -32,7 +32,7 @@ namespace Task5.Tests
         private static readonly string IntegersInOrder = "-1 8 13 14 16";
         private static readonly string IntegersPostOrder = "8 14 16 13 -1";
         
-
+        
         private static readonly BinarySearchTree<int> IntegersWithComparison =
             new BinarySearchTree<int>(new List<int> { -1, 13, 16, 8, 14 }, delegate (int first, int second) { return ((-1 * first > -1 * second) ? 1 : -1 * first < -1 * second ? -1 : 0); });
         private static readonly string IntegersWithComparisonPreOrder = "-1 13 16 14 8";
@@ -76,11 +76,14 @@ namespace Task5.Tests
         List<Book> BooksWithComparisonInOrder = new List<Book> { book2, book1, book3, book4 };
         List<Book> BooksWithComparisonPostOrder = new List<Book> { book2, book4, book3, book1 };
         #endregion
-
+        
         #region Points
         private static readonly Point Point1 = new Point(2, 4);
         private static readonly Point Point2 = new Point(6, -5);
         private static readonly Point Point3 = new Point(13, 13);
+
+        
+
         private static readonly BinarySearchTree<Point> PointsWithComparison =
             new BinarySearchTree<Point>(new List<Point> { Point1, Point2, Point3 }, delegate (Point first, Point second)
             {
@@ -134,7 +137,7 @@ namespace Task5.Tests
             }
             Assert.AreEqual(temp.Trim(), IntegersPostOrder);
         }
-
+        
         [Test]
         public void PreOrder_IntegerValuesWithComparison()
         {
@@ -235,7 +238,7 @@ namespace Task5.Tests
             Assert.AreEqual(temp.Trim(), StringsWithComparisonPostOrder);
         }
 
-
+        
         [Test]
         public void PreOrder_Books()
         {
@@ -290,7 +293,7 @@ namespace Task5.Tests
                 temp.Add(item);
             Assert.AreEqual(temp, BooksWithComparisonPostOrder);
         }
-
+        
         [Test]
         public void PreOrder_PointsWithComparison()
         {
@@ -317,6 +320,14 @@ namespace Task5.Tests
                 temp.Add(item);
             Assert.AreEqual(temp, PointsWithComparisonPostOrder);
         }
+
+
+        [Test]
+        public void PointConstructor_Points()
+        {
+            Assert.Throws<TypeInitializationException>(() => new BinarySearchTree<Point>(new List<Point> { Point1, Point2, Point3 }));
+        }
+        
         #endregion
 
     }

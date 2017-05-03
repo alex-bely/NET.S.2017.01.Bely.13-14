@@ -16,7 +16,7 @@ namespace Task5
         /// <summary>
         /// Represents Node of tree
         /// </summary>
-        public class Node
+        private class Node
         {
             public T Value { get; set; }
 
@@ -43,7 +43,8 @@ namespace Task5
         /// <summary>
         /// Default constructor
         /// </summary>
-        public BinarySearchTree() : this(Comparer<T>.Default) { }
+        public BinarySearchTree():this(Comparer<T>.Default)
+        { }
 
         /// <summary>
         /// Initializes Tree instance with specified comparer
@@ -51,6 +52,9 @@ namespace Task5
         /// <param name="defaultComparer">Contains rule of comparing</param>
         public BinarySearchTree(IComparer<T> defaultComparer)
         {
+            if (!((typeof(T).GetInterfaces().Contains(typeof(IComparable))) || (typeof(T).GetInterfaces().Contains(typeof(IComparable<T>)))) && ReferenceEquals(defaultComparer, Comparer<T>.Default))
+                throw new TypeInitializationException("Type is not IComparable",new ArgumentException());
+
             if (ReferenceEquals(defaultComparer, null))
                 comparer = Comparer<T>.Default;
             comparer = defaultComparer;
@@ -274,7 +278,7 @@ namespace Task5
         /// </summary>
         /// <param name="item">Searched item</param>
         /// <returns>Node with specified item</returns>
-        public Node Search(T item)
+        public T Search(T item)
         {
             if (ReferenceEquals(item, null))
                 throw new ArgumentNullException();
@@ -284,14 +288,14 @@ namespace Task5
             {
                 var result = comparer.Compare(item, current.Value);
                 if (result == 0)
-                    return current;
+                    return current.Value;
                 if (result < 0)
                     current = current.Left;
                 else
                     current = current.Right;
             }
 
-            return null;
+            return default(T);
         }
 
         /// <summary>

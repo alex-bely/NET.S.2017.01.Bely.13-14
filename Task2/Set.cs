@@ -11,17 +11,17 @@ namespace Task2
     /// Represents disordered set of reference type element
     /// </summary>
     /// <typeparam name="T">Specifies the type of elements in the set.</typeparam>
-    public class Set<T> : IEnumerable, IEnumerable<T> where T : class
+    public class Set<T> : IEnumerable<T> /*ISet<T>*/ where T : class, IEquatable<T>
     {
         #region Fields
         private IEqualityComparer<T> comparer;
-        private readonly List<T> internalData;
+        private T[] internalData;
         #endregion
 
         /// <summary>
         /// Returns amount of elements
         /// </summary>
-        public int Count => internalData.Count;
+        public int Count { get; private set; } = 0;
         #region Constructors
         /// <summary>
         /// Initializes instance of Set
@@ -32,7 +32,7 @@ namespace Task2
             if (ReferenceEquals(comparer, null))
                 this.comparer = EqualityComparer<T>.Default;
             else this.comparer = comparer;
-            internalData = new List<T>();
+            internalData = new T[] { };
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Task2
         {
             if (ReferenceEquals(collection, null))
                 throw new ArgumentNullException("Source collection is null referenced");
-
+            this.internalData = new T[collection.Count()];
             foreach (var temp in collection)
                 this.Add(temp);
         }
@@ -80,7 +80,9 @@ namespace Task2
             {
                 return;
             }
-            internalData.Add(item);
+
+            Array.Resize(ref internalData, Count+1);
+            internalData[Count++]=item;
         }
 
         /// <summary>
@@ -92,10 +94,13 @@ namespace Task2
         {
             if (ReferenceEquals(item, null))
                 throw new ArgumentNullException("Item is null referenced");
-            
-            internalData.Remove(item);
+
+            internalData = internalData.Where(x => !x.Equals(item)).ToArray();
+            internalData = internalData.Where(x => !ReferenceEquals(x,null)).ToArray();
+            Count = internalData.Length;
         }
 
+        #region Static members
         /// <summary>
         /// Creates new Set instance that is a result of union of two sets
         /// </summary>
@@ -123,7 +128,7 @@ namespace Task2
         /// </summary>
         /// <param name="first">First Set</param>
         /// <param name="second">Second Set</param>
-        /// <returns>Set instance that is a result of union of two sets</returns>
+        /// <returns>Set instance that is a result of intersection of two sets</returns>
         /// <exception cref="ArgumentNullException">One of arguments is null referenced</exception>
         public static Set<T> Intersection(Set<T> first, Set<T> second)
         {
@@ -146,7 +151,7 @@ namespace Task2
         /// </summary>
         /// <param name="first">First Set</param>
         /// <param name="second">Second Set</param>
-        /// <returns>Set instance that is a result of union of two sets</returns>
+        /// <returns>Set instance that is a result of difference of two sets</returns>
         /// <exception cref="ArgumentNullException">One of arguments is null referenced</exception>
         public static Set<T> Difference(Set<T> first, Set<T> second)
         {
@@ -166,7 +171,7 @@ namespace Task2
         /// </summary>
         /// <param name="first">First Set</param>
         /// <param name="second">Second Set</param>
-        /// <returns>Set instance that is a result of union of two sets</returns>
+        /// <returns>Set instance that is a result of symmetric difference of two sets</returns>
         /// <exception cref="ArgumentNullException">One of arguments is null referenced</exception>
         public static Set<T> SymmetricDifference(Set<T> first, Set<T> second)
         {
@@ -175,6 +180,61 @@ namespace Task2
 
             return Difference(Union(first, second), Intersection(first, second));
         }
+        #endregion
+
+        /// <summary>
+        /// Creates new Set instance that is a result of union of two sets
+        /// </summary>
+        /// <param name="other">Another set</param>
+        /// <returns>Set instance that is a result of union of two sets</returns>
+        /// <exception cref="ArgumentNullException">Argument is null referenced</exception>
+        public Set<T> UnionWith(Set<T> other)
+        {
+            if (ReferenceEquals(other, null) || ReferenceEquals(other, null))
+                throw new ArgumentNullException();
+            return Union(this, other);
+        }
+
+        /// <summary>
+        /// Creates new Set instance that is a result of intersection of two sets
+        /// </summary>
+        /// <param name="other">Another set</param>
+        /// <returns>Set instance that is a result of intersection of two sets</returns>
+        /// <exception cref="ArgumentNullException">Argument is null referenced</exception>
+        public Set<T> IntersectionWith(Set<T> other)
+        {
+            if (ReferenceEquals(other, null) || ReferenceEquals(other, null))
+                throw new ArgumentNullException();
+            return Intersection(this, other);
+        }
+
+
+        /// <summary>
+        /// Creates new Set instance that is a result of difference of two sets
+        /// </summary>
+        /// <param name="other">Another set</param>
+        /// <returns>Set instance that is a result of difference of two sets</returns>
+        /// <exception cref="ArgumentNullException">Argument is null referenced</exception>
+        public Set<T> DifferenceWith(Set<T> other)
+        {
+            if (ReferenceEquals(other, null) || ReferenceEquals(other, null))
+                throw new ArgumentNullException();
+            return Difference(this, other);
+        }
+
+        /// <summary>
+        /// Creates new Set instance that is a result of symmetric difference of two sets
+        /// </summary>
+        /// <param name="other">Another set</param>
+        /// <returns>Set instance that is a result of symmetric difference of two sets</returns>
+        /// <exception cref="ArgumentNullException">Argument is null referenced</exception>
+        public Set<T> SymmetricDifferenceWith(Set<T> other)
+        {
+            if (ReferenceEquals(other, null) || ReferenceEquals(other, null))
+                throw new ArgumentNullException();
+            return SymmetricDifference(this, other);
+        }
+
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -246,7 +306,7 @@ namespace Task2
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
+        } 
         #endregion
     }
 }

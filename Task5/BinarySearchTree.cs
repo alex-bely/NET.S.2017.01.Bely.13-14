@@ -52,7 +52,7 @@ namespace Task5
         /// <param name="defaultComparer">Contains rule of comparing</param>
         public BinarySearchTree(IComparer<T> defaultComparer)
         {
-            if (!((typeof(T).GetInterfaces().Contains(typeof(IComparable))) || (typeof(T).GetInterfaces().Contains(typeof(IComparable<T>)))) && ReferenceEquals(defaultComparer, Comparer<T>.Default))
+            if (ReferenceEquals(defaultComparer, Comparer<T>.Default) && !((typeof(T).GetInterfaces().Contains(typeof(IComparable))) || (typeof(T).GetInterfaces().Contains(typeof(IComparable<T>)))))
                 throw new TypeInitializationException("Type is not IComparable",new ArgumentException());
 
             if (ReferenceEquals(defaultComparer, null))
